@@ -357,7 +357,6 @@
         const LOCAL_LOGO_PATH = "http://localhost/Keng/"; 
         let useGifMode = true; 
         let gifDuration = 4.0; 
-        let showAllTeams = false; // 🟢 เพิ่มตัวแปรสำหรับแสดงทุกทีม
 
         let currentTeamsEliminated = {}; 
         let playerStates = {}; 
@@ -665,12 +664,6 @@
                     }
                 }
 
-                // 🟢 เพิ่มโค้ดบังคับแสดงผลเมื่อมีการเรียกใช้ &allteam=true ผ่าน URL
-                if (showAllTeams && visibilityClass === 'hidden-top4') {
-                    visibilityClass = '';
-                    expansionClass = 'collapsed'; // โชว์ทีมที่ร่วงไปแล้วแบบแถบหด
-                }
-
                 const themeClass = index === 0 ? 'first-place' : 'normal-place';
                 
                 if (teamInBlueZone && teamIsAlive) {
@@ -694,10 +687,10 @@
                 
                 if (!rowWrapper.querySelector('.row-grid')) {
                     const logoSrc = `${LOCAL_LOGO_PATH}${team.team_tag}.png`; 
-                    /* 🟢 ย้าย <div class="col-match"> มาต่อท้าย <div class="col-kills"> */
+                    /* 🟢 ถอด ${team.total_pts_rank} ออกจาก .col-rank เพื่อซ่อนตัวเลข */
                     rowWrapper.innerHTML = `
                         <div class="row-grid">
-                            <div class="col-rank">${team.total_pts_rank}</div>
+                            <div class="col-rank"></div> 
                             <div class="col-team"><img class="team-logo" src="${logoSrc}" onerror="this.style.visibility='hidden'"><div class="team-name">${team.team_tag}</div></div>
                             <div class="col-alive">${dotsHtml}</div>
                             <div class="col-pts">${team.total_pts_with_penalty}</div>
@@ -707,7 +700,7 @@
                         <div class="player-list">${playerDetailsHtml}</div>
                     `;
                 } else {
-                    rowWrapper.querySelector('.col-rank').innerText = team.total_pts_rank;
+                    rowWrapper.querySelector('.col-rank').innerText = ''; /* ล้างค่าเสมอ เพื่อไม่ให้มีตัวเลข Rank โผล่ */
                     rowWrapper.querySelector('.col-match').innerText = team.match_count || 0;
                     rowWrapper.querySelector('.col-alive').innerHTML = dotsHtml;
                     rowWrapper.querySelector('.col-pts').innerText = team.total_pts_with_penalty;
@@ -794,12 +787,9 @@
                 document.body.style.transform = `translate(${x}px, ${y}px)`;
             }
 
-            // 🟢 เช็คว่ามีการใส่พารามิเตอร์ allteam มาใน URL หรือไม่
-            if(urlParams.has('allteam')) {
-                showAllTeams = urlParams.get('allteam') === 'true';
-            }
-
-            API_URL = `https://domestic.atum.live/api/pubg/liveleaderboard?account_id=nattapon7799&series=${tourneyId}&tournament_id=${tourneyId}&mode=post`;
+            /* 🟢 เพิ่ม &all_team=true ต่อท้าย API_URL */
+            API_URL = `https://domestic.atum.live/api/pubg/liveleaderboard?account_id=nattapon7799&series=${tourneyId}&tournament_id=${tourneyId}&mode=post&all_team=true`;
+            
             fetchRealTimeData();
             setInterval(fetchRealTimeData, 1000); 
         }
