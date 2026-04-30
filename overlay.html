@@ -35,31 +35,27 @@
         * {
             font-family: 'TransducerCondensed', sans-serif !important;
             letter-spacing: 0.5px;
-            font-weight: normal !important; /* บังคับให้เป็นตัวธรรมดา ไม่หนา */
+            font-weight: normal !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
             backface-visibility: hidden;
             perspective: 1000px;
         }
 
-        /* 🟢 บังคับใช้ฟอนต์ Transducer เฉพาะแถบ Header */
         .header-row, .header-row * {
             font-family: 'TransducerCondensed', sans-serif !important;
         }
 
         body { margin: 0; padding: 20px; background-color: transparent; }
 
-        /* ปรับความกว้างรวมเป็น 285px เพื่อเผื่อที่ให้คอลัมน์ Match ขวาสุด */
         .scoreboard-container { display: flex; flex-direction: column; width: 285px; position: relative; border-radius: 0px !important; overflow: visible !important; }
         #scoreboard { display: flex; flex-direction: column; width: 100%; position: relative; overflow: visible !important; }
         
-        /* 🟢 ปรับขนาด Header เล็กลงนิดหน่อย */
-        .header-row { height: 26px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
+        /* 🟢 ปรับความสูง Header ให้รับกับขนาดแถว 20px */
+        .header-row { height: 18px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
         
-        /* 🟢 จัด Grid ใหม่: เลื่อนช่องไปไว้ขวาสุด */
         .row-grid { display: grid; grid-template-columns: 24px minmax(0, 1fr) 42px 30px 38px 28px; align-items: center; box-sizing: border-box; padding: 0 4px; position: relative; z-index: 5; }
         
-        /* 60fps Optimization + Broadcast Easing */
         .team-wrapper { 
             position: relative; 
             transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
@@ -70,7 +66,6 @@
         }
         .team-wrapper.is-moving { z-index: 10; }
         
-        /* 🟢 ห้ามใช้ display: none ตอน animation */
         .team-wrapper.hidden-top4 { 
             opacity: 0;
             transform: scale(0.95) translateZ(0);
@@ -101,11 +96,11 @@
             will-change: background-color, opacity;
         }
 
-        /* 🟢 ปรับความสูงแถวเล็กลงนิดหน่อย (32px -> 30px) */
+        /* 🟢 ปรับความสูงแถวเป็น 20px */
         .team-row-inner .row-grid { height: 20px; }
-        .team-row-inner.expanded .row-grid { border-bottom: 1px solid rgba(128, 128, 128, 0.3); margin-bottom: 5px; }
-        .team-row-inner.collapsed { max-height: 30px; padding-bottom: 0; overflow: hidden; }
-        .team-row-inner.expanded { max-height: 250px; padding-bottom: 8px; overflow: hidden; }
+        .team-row-inner.expanded .row-grid { border-bottom: 1px solid rgba(128, 128, 128, 0.3); margin-bottom: 3px; }
+        .team-row-inner.collapsed { max-height: 20px; padding-bottom: 0; overflow: hidden; }
+        .team-row-inner.expanded { max-height: 250px; padding-bottom: 6px; overflow: hidden; }
         
         .team-row-inner.first-place { border-bottom: 1px solid rgba(191,191,191,0.35); }
         .team-row-inner.normal-place { border-bottom: 1px solid rgba(191,191,191,0.35); }
@@ -121,10 +116,10 @@
         
         .blue-chip-panel {
             position: absolute;
-            right: -38px; 
+            right: -30px; 
             top: 0;
-            width: 38px; 
-            height: 20px; /* ปรับลดตามแถว */
+            width: 30px; 
+            height: 20px; /* 🟢 ปรับลดตามแถว 20px */
             background-color: rgba(0,0,0, 0.5); 
             display: flex;
             align-items: center;
@@ -147,20 +142,20 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 3px;
+            padding: 2px;
             box-sizing: border-box;
         }
 
         .col-rank, .col-team, .col-match, .col-alive, .col-pts, .col-kills { display: flex; align-items: center; height: 100%; line-height: 1; }
         
-        /* 🟢 ปรับขนาด Font ให้เล็กลงนิดหน่อยตามขนาดกล่อง */
-        .col-rank { justify-content: center; font-size: 14px; }
+        /* 🟢 ปรับฟอนต์ให้เข้ากับกรอบ 20px */
+        .col-rank { justify-content: center; font-size: 12px; }
         
         .col-team { justify-content: flex-start; padding-left: 4px; }
-        .team-logo { width: 26px; height: 26px; margin-right: 8px; object-fit: contain; background-color: transparent; flex-shrink: 0; transform: translateZ(0); }
+        .team-logo { width: 16px; height: 16px; margin-right: 6px; object-fit: contain; background-color: transparent; flex-shrink: 0; transform: translateZ(0); }
         
         .team-name { 
-            font-size: 18px; /* 20px -> 18px */
+            font-size: 14px; 
             font-weight: 100;
             white-space: nowrap; 
             overflow: hidden; 
@@ -169,7 +164,7 @@
             text-transform: uppercase; 
             display: block; 
             width: 100%;
-            transform: translate(0px, 0px); 
+            transform: translate(0px, 1px); 
         }
 
         .col-alive { 
@@ -178,18 +173,18 @@
         }
 
         .col-pts { 
-            justify-content: center; font-size: 16px; /* 18px -> 16px */
+            justify-content: center; font-size: 14px; 
             transform: translate(0px, 0px); 
         }
 
         .col-kills { 
-            justify-content: center; font-size: 16px; /* 18px -> 16px */
+            justify-content: center; font-size: 14px; 
             transform: translate(0px, 0px); 
         }
 
-        .col-match { justify-content: center; font-size: 14px; transform: translate(0px, 0px); }
+        .col-match { justify-content: center; font-size: 12px; transform: translate(0px, 0px); }
 
-        .header-row .col-rank, .header-row .col-team, .header-row .col-match, .header-row .col-alive, .header-row .col-pts, .header-row .col-kills { font-size: 13px; letter-spacing: 0px; }
+        .header-row .col-rank, .header-row .col-team, .header-row .col-match, .header-row .col-alive, .header-row .col-pts, .header-row .col-kills { font-size: 11px; letter-spacing: 0px; }
         .header-row .col-team { padding-left: 28px; } 
 
         .header-row .col-alive { transform: translate(-4px, 0px); }
@@ -197,7 +192,8 @@
         .header-row .col-kills { transform: translate(0px, 0px); }
         .header-row .col-match { transform: translate(0px, 0px); }
 
-        .alive-bar { position: relative; width: 6px; height: 16px; border-radius: 1px; border: 1px solid #000000; box-sizing: border-box; background-color: #111111; overflow: hidden; transform: translateZ(0); }
+        /* 🟢 ปรับขนาดขีดเลือดให้พอดีกับแถว 20px */
+        .alive-bar { position: relative; width: 5px; height: 14px; border-radius: 1px; border: 1px solid #000000; box-sizing: border-box; background-color: #111111; overflow: hidden; transform: translateZ(0); }
         .hp-fill-small { 
             position: absolute; bottom: 0; left: 0; width: 100%; 
             height: 100%;
@@ -207,11 +203,11 @@
             will-change: transform, background-color;
         }
 
-        .player-list { padding: 2px 8px 6px 34px; display: flex; flex-direction: column; gap: 5px; }
-        .player-item { display: grid; grid-template-columns: minmax(0, 1fr) 110px; align-items: center; gap: 10px; width: 100%; }
+        .player-list { padding: 2px 8px 4px 30px; display: flex; flex-direction: column; gap: 4px; }
+        .player-item { display: grid; grid-template-columns: minmax(0, 1fr) 100px; align-items: center; gap: 8px; width: 100%; }
         
         .player-name { 
-            font-size: 14px; 
+            font-size: 12px; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
@@ -223,7 +219,7 @@
         }
         .player-name.dead { color: var(--c-team-text-dead); opacity: 0.7; }
         
-        .player-hp-bar { height: 9px; background-color: #444; border: 1px solid #000; position: relative; overflow: hidden; transform: translateZ(0); }
+        .player-hp-bar { height: 8px; background-color: #444; border: 1px solid #000; position: relative; overflow: hidden; transform: translateZ(0); }
         .player-hp-fill { 
             height: 100%; 
             width: 100%;
@@ -252,10 +248,11 @@
             100% { transform: translate3d(105%, 0, 0); opacity: 0; } 
         }
         
+        /* 🟢 ปรับความสูงแบนเนอร์เป็น 20px */
         .eliminated-banner.default-mode { 
             position: absolute; top: 0; left: 0; width: 100%; height: 20px; 
             background-color: var(--c-elim-bg); color: var(--c-elim-text); 
-            display: flex; align-items: center; justify-content: center; font-size: 15px; transform: translateX(-105%); 
+            display: flex; align-items: center; justify-content: center; font-size: 12px; transform: translateX(-105%); 
             animation: slide-pause-out-banner var(--gif-duration) ease-in-out forwards;
             will-change: transform;
         }
@@ -275,12 +272,12 @@
             background-position: center;
             background-repeat: no-repeat; 
             color: #ffffff; 
-            display: flex; align-items: center; justify-content: center; font-size: 14px; transform: translateX(-105%); 
+            display: flex; align-items: center; justify-content: center; font-size: 11px; transform: translateX(-105%); 
             animation: slide-pause-out-banner 4s ease-in-out forwards;
             will-change: transform;
         }
         
-        /* 🟢 CSS Animation สำหรับ Bluezone */
+        /* 🟢 CSS Animation สำหรับ Bluezone (20px) */
         .team-row-inner::before { 
             content: ''; 
             position: absolute; 
@@ -336,7 +333,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const tourneyId = urlParams.get('tourney');
         
-        // 🟢 อ่านค่า Parameter ว่าต้องการโชว์ทุกทีมและปิดระบบออโต้สลับกลุ่มหรือไม่
         const showAllTeams = urlParams.get('allteam') === 'true';
 
         let API_URL = "";
@@ -388,7 +384,6 @@
             const aliveTeamsCountCheck = data.data.teams.filter(t => t.elimination === false || (t.players && t.players.some(p => p.isAlive))).length;
             const currentTeamNamesList = data.data.teams.map(t => t.team_name);
             
-            // 🟢 ตัดระบบเช็คกลุ่มอัตโนมัติออก ถ้าเปิด allteam=true
             let isGroupChanged = false;
             if (!showAllTeams && !isFirstRender && lastKnownTeams.length > 0) {
                 const matchedCount = currentTeamNamesList.filter(name => lastKnownTeams.includes(name)).length;
@@ -400,7 +395,6 @@
 
             let isMatchReset = false;
             if (showAllTeams) {
-                // ถ้า allteam=true จะล้างบอร์ดเฉพาะตอนรันครั้งแรก ไม่ล้างระหว่างเกม
                 if (isFirstRender) isMatchReset = true;
             } else {
                 if (isFirstRender || isGroupChanged || (previousAliveCount < 10 && aliveTeamsCountCheck >= 14)) {
@@ -431,7 +425,6 @@
 
             const scoreboard = document.getElementById('scoreboard');
 
-            // 🟢 จะไม่เตะกล่องทีมออกถ้าเปิด allteam=true
             if (!showAllTeams) {
                 const activeTeamIds = currentTeamNamesList.map(name => `team-${name}`);
                 scoreboard.querySelectorAll('.team-wrapper').forEach(row => {
@@ -576,7 +569,7 @@
                             const bannerHtml = document.createElement('div');
                             bannerHtml.className = 'revived-banner animate';
                             bannerHtml.style.backgroundImage = `url('REVIVED.png')`;
-                            bannerHtml.innerHTML = `<span style="font-size:14px; color:#ffffff; text-transform: none;">REVIVED: ${playerName}</span>`;
+                            bannerHtml.innerHTML = `<span>REVIVED: ${playerName}</span>`;
                             
                             innerRow.querySelector('.banner-layer').appendChild(bannerHtml);
                             setTimeout(() => { bannerHtml.remove(); }, 4050);
