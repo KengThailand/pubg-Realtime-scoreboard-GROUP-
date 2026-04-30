@@ -102,7 +102,7 @@
         }
 
         /* 🟢 ปรับความสูงแถวเล็กลงนิดหน่อย (32px -> 30px) */
-        .team-row-inner .row-grid { height: 30px; }
+        .team-row-inner .row-grid { height: 20px; }
         .team-row-inner.expanded .row-grid { border-bottom: 1px solid rgba(128, 128, 128, 0.3); margin-bottom: 5px; }
         .team-row-inner.collapsed { max-height: 30px; padding-bottom: 0; overflow: hidden; }
         .team-row-inner.expanded { max-height: 250px; padding-bottom: 8px; overflow: hidden; }
@@ -124,7 +124,7 @@
             right: -38px; 
             top: 0;
             width: 38px; 
-            height: 30px; /* ปรับลดตามแถว */
+            height: 20px; /* ปรับลดตามแถว */
             background-color: rgba(0,0,0, 0.5); 
             display: flex;
             align-items: center;
@@ -253,7 +253,7 @@
         }
         
         .eliminated-banner.default-mode { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 30px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 20px; 
             background-color: var(--c-elim-bg); color: var(--c-elim-text); 
             display: flex; align-items: center; justify-content: center; font-size: 15px; transform: translateX(-105%); 
             animation: slide-pause-out-banner var(--gif-duration) ease-in-out forwards;
@@ -261,7 +261,7 @@
         }
 
         .eliminated-banner.gif-mode { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 30px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 20px; 
             background-size: cover; background-position: center; background-color: transparent; 
             display: flex; align-items: center; justify-content: center; transform: translateX(-105%); 
             animation: slide-in-pause-out-gif var(--gif-duration) ease-in-out forwards;
@@ -269,7 +269,7 @@
         }
         
         .revived-banner { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 30px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 20px; 
             background-image: url('REVIVED.png'); 
             background-size: cover; 
             background-position: center;
@@ -287,7 +287,7 @@
             top: 0; 
             left: 0; 
             right: 0; 
-            height: 30px; 
+            height: 20px; 
             background-color: rgba(4, 103, 173); 
             opacity: 0;
             transition: opacity 0.75s ease-in-out;
