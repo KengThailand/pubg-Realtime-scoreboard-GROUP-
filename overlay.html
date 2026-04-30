@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUBG Scoreboard - Advanced OBS Overlay (25px)</title>
+    <title>PUBG Scoreboard - Advanced OBS Overlay (25px - Original Width)</title>
     <style>
         :root {
             /* สีพื้นฐาน (รับค่าจาก URL ได้) */
@@ -49,14 +49,14 @@
 
         body { margin: 0; padding: 20px; background-color: transparent; }
 
+        /* ความกว้างรวม 285px เหมือนต้นฉบับ */
         .scoreboard-container { display: flex; flex-direction: column; width: 285px; position: relative; border-radius: 0px !important; overflow: visible !important; }
         #scoreboard { display: flex; flex-direction: column; width: 100%; position: relative; overflow: visible !important; }
         
-        /* 🟢 ปรับขนาด Header ให้สมดุลกับ 25px */
         .header-row { height: 22px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
         
-        /* 🟢 จัด Grid ใหม่ */
-        .row-grid { display: grid; grid-template-columns: 24px minmax(0, 1fr) 38px 28px 34px 26px; align-items: center; box-sizing: border-box; padding: 0 4px; position: relative; z-index: 5; }
+        /* 🟢 จัด Grid ใหม่: คืนค่าความกว้างคอลัมน์กลับเป็นค่าดั้งเดิมเป๊ะๆ */
+        .row-grid { display: grid; grid-template-columns: 24px minmax(0, 1fr) 42px 30px 38px 28px; align-items: center; box-sizing: border-box; padding: 0 4px; position: relative; z-index: 5; }
         
         /* 60fps Optimization + Broadcast Easing */
         .team-wrapper { 
@@ -100,7 +100,7 @@
             will-change: background-color, opacity;
         }
 
-        /* ⭐ 1. ปรับความสูงแถวเหลือ 25px */
+        /* ⭐ ปรับความสูงเป็น 25px */
         .team-row-inner .row-grid { height: 25px; }
         .team-row-inner.expanded .row-grid { border-bottom: 1px solid rgba(128, 128, 128, 0.3); margin-bottom: 5px; }
         .team-row-inner.collapsed { max-height: 25px; padding-bottom: 0; overflow: hidden; }
@@ -118,7 +118,6 @@
             100% { filter: brightness(1); } 
         }
         
-        /* ⭐ 2. ปรับความสูง Bluechip เป็น 25px */
         .blue-chip-panel {
             position: absolute;
             right: -38px; 
@@ -153,7 +152,6 @@
 
         .col-rank, .col-team, .col-match, .col-alive, .col-pts, .col-kills { display: flex; align-items: center; height: 100%; line-height: 1; }
         
-        /* 🟢 ย่อฟอนต์และโลโก้ให้รับกับ 25px */
         .col-rank { justify-content: center; font-size: 13px; }
         
         .col-team { justify-content: flex-start; padding-left: 4px; }
@@ -252,7 +250,6 @@
             100% { transform: translate3d(105%, 0, 0); opacity: 0; } 
         }
         
-        /* ⭐ 3. ป้ายตาย Default 25px */
         .eliminated-banner.default-mode { 
             position: absolute; top: 0; left: 0; width: 100%; height: 25px; 
             background-color: var(--c-elim-bg); color: var(--c-elim-text); 
@@ -261,7 +258,6 @@
             will-change: transform;
         }
 
-        /* ⭐ 3. ป้ายตาย GIF 25px */
         .eliminated-banner.gif-mode { 
             position: absolute; top: 0; left: 0; width: 100%; height: 25px; 
             background-size: cover; background-position: center; background-color: transparent; 
@@ -270,7 +266,6 @@
             will-change: transform;
         }
         
-        /* ⭐ 3. ป้ายชุบชีวิต 25px */
         .revived-banner { 
             position: absolute; top: 0; left: 0; width: 100%; height: 25px; 
             background-image: url('REVIVED.png'); 
@@ -283,7 +278,6 @@
             will-change: transform;
         }
         
-        /* ⭐ 4. ขอบกระพริบ Bluezone 25px */
         .team-row-inner::before { 
             content: ''; 
             position: absolute; 
