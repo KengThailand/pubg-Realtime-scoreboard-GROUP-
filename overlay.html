@@ -53,9 +53,10 @@
         .scoreboard-container { display: flex; flex-direction: column; width: 285px; position: relative; border-radius: 0px !important; overflow: visible !important; }
         #scoreboard { display: flex; flex-direction: column; width: 100%; position: relative; overflow: visible !important; }
         
-        .header-row { height: 28px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
+        /* 🟢 ปรับขนาด Header เล็กลงนิดหน่อย */
+        .header-row { height: 26px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
         
-        /* 🟢 จัด Grid ใหม่: เลื่อนช่อง 28px ไปไว้ขวาสุด */
+        /* 🟢 จัด Grid ใหม่: เลื่อนช่องไปไว้ขวาสุด */
         .row-grid { display: grid; grid-template-columns: 24px minmax(0, 1fr) 42px 30px 38px 28px; align-items: center; box-sizing: border-box; padding: 0 4px; position: relative; z-index: 5; }
         
         /* 60fps Optimization + Broadcast Easing */
@@ -100,9 +101,10 @@
             will-change: background-color, opacity;
         }
 
-        .team-row-inner .row-grid { height: 32px; }
+        /* 🟢 ปรับความสูงแถวเล็กลงนิดหน่อย (32px -> 30px) */
+        .team-row-inner .row-grid { height: 30px; }
         .team-row-inner.expanded .row-grid { border-bottom: 1px solid rgba(128, 128, 128, 0.3); margin-bottom: 5px; }
-        .team-row-inner.collapsed { max-height: 32px; padding-bottom: 0; overflow: hidden; }
+        .team-row-inner.collapsed { max-height: 30px; padding-bottom: 0; overflow: hidden; }
         .team-row-inner.expanded { max-height: 250px; padding-bottom: 8px; overflow: hidden; }
         
         .team-row-inner.first-place { border-bottom: 1px solid rgba(191,191,191,0.35); }
@@ -122,7 +124,7 @@
             right: -38px; 
             top: 0;
             width: 38px; 
-            height: 32px; 
+            height: 30px; /* ปรับลดตามแถว */
             background-color: rgba(0,0,0, 0.5); 
             display: flex;
             align-items: center;
@@ -149,23 +151,16 @@
             box-sizing: border-box;
         }
 
-        /* -------------------------------------------------------------------------
-           🎯 โซนปรับแต่งตำแหน่ง (X, Y) แยกอิสระสำหรับกระดานหลัก 
-           วิธีใช้: แก้ตัวเลขใน translate(แกน X, แกน Y) 
-                   - แกน X (บวกไปขวา, ลบไปซ้าย)
-                   - แกน Y (บวกเลื่อนลง, ลบเลื่อนขึ้น)
-        -------------------------------------------------------------------------- */
-
         .col-rank, .col-team, .col-match, .col-alive, .col-pts, .col-kills { display: flex; align-items: center; height: 100%; line-height: 1; }
         
-        .col-rank { justify-content: center; font-size: 15px; }
+        /* 🟢 ปรับขนาด Font ให้เล็กลงนิดหน่อยตามขนาดกล่อง */
+        .col-rank { justify-content: center; font-size: 14px; }
         
         .col-team { justify-content: flex-start; padding-left: 4px; }
-        .team-logo { width: 28px; height: 28px; margin-right: 8px; object-fit: contain; background-color: transparent; flex-shrink: 0; transform: translateZ(0); }
+        .team-logo { width: 26px; height: 26px; margin-right: 8px; object-fit: contain; background-color: transparent; flex-shrink: 0; transform: translateZ(0); }
         
-        /* 1. ตำแหน่งชื่อทีม (ตัวอักษร) */
         .team-name { 
-            font-size: 20px;
+            font-size: 18px; /* 20px -> 18px */
             font-weight: 100;
             white-space: nowrap; 
             overflow: hidden; 
@@ -177,41 +172,32 @@
             transform: translate(0px, 0px); 
         }
 
-        /* 2. ตำแหน่งขีด ALIVE */
         .col-alive { 
             justify-content: center; gap: 2px; 
             transform: translate(-4px, 0px); 
         }
 
-        /* 3. ตำแหน่งตัวเลขคะแนน PTS */
         .col-pts { 
-            justify-content: center; font-size: 18px; 
+            justify-content: center; font-size: 16px; /* 18px -> 16px */
             transform: translate(0px, 0px); 
         }
 
-        /* 4. ตำแหน่งตัวเลข KILLS */
         .col-kills { 
-            justify-content: center; font-size: 18px; 
+            justify-content: center; font-size: 16px; /* 18px -> 16px */
             transform: translate(0px, 0px); 
         }
 
-        /* 🟢 ตำแหน่งตัวเลขจำนวน Match (เพิ่มใหม่ ขวาสุด) */
-        .col-match { justify-content: center; font-size: 15px; transform: translate(0px, 0px); }
+        .col-match { justify-content: center; font-size: 14px; transform: translate(0px, 0px); }
 
-        /* -------------------------------------------------------------------------
-           🎯 โซนปรับแต่งตำแหน่ง (X, Y) สำหรับแถบ Header ด้านบนสุด
-        -------------------------------------------------------------------------- */
-        .header-row .col-rank, .header-row .col-team, .header-row .col-match, .header-row .col-alive, .header-row .col-pts, .header-row .col-kills { font-size: 14px; letter-spacing: 0px; }
+        .header-row .col-rank, .header-row .col-team, .header-row .col-match, .header-row .col-alive, .header-row .col-pts, .header-row .col-kills { font-size: 13px; letter-spacing: 0px; }
         .header-row .col-team { padding-left: 28px; } 
 
         .header-row .col-alive { transform: translate(-4px, 0px); }
         .header-row .col-pts { transform: translate(0px, 0px); }
         .header-row .col-kills { transform: translate(0px, 0px); }
         .header-row .col-match { transform: translate(0px, 0px); }
-        /* ------------------------------------------------------------------------- */
 
-
-        .alive-bar { position: relative; width: 6px; height: 18px; border-radius: 1px; border: 1px solid #000000; box-sizing: border-box; background-color: #111111; overflow: hidden; transform: translateZ(0); }
+        .alive-bar { position: relative; width: 6px; height: 16px; border-radius: 1px; border: 1px solid #000000; box-sizing: border-box; background-color: #111111; overflow: hidden; transform: translateZ(0); }
         .hp-fill-small { 
             position: absolute; bottom: 0; left: 0; width: 100%; 
             height: 100%;
@@ -225,7 +211,7 @@
         .player-item { display: grid; grid-template-columns: minmax(0, 1fr) 110px; align-items: center; gap: 10px; width: 100%; }
         
         .player-name { 
-            font-size: 15px; 
+            font-size: 14px; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
@@ -237,7 +223,7 @@
         }
         .player-name.dead { color: var(--c-team-text-dead); opacity: 0.7; }
         
-        .player-hp-bar { height: 10px; background-color: #444; border: 1px solid #000; position: relative; overflow: hidden; transform: translateZ(0); }
+        .player-hp-bar { height: 9px; background-color: #444; border: 1px solid #000; position: relative; overflow: hidden; transform: translateZ(0); }
         .player-hp-fill { 
             height: 100%; 
             width: 100%;
@@ -267,15 +253,15 @@
         }
         
         .eliminated-banner.default-mode { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 32px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 30px; 
             background-color: var(--c-elim-bg); color: var(--c-elim-text); 
-            display: flex; align-items: center; justify-content: center; font-size: 16px; transform: translateX(-105%); 
+            display: flex; align-items: center; justify-content: center; font-size: 15px; transform: translateX(-105%); 
             animation: slide-pause-out-banner var(--gif-duration) ease-in-out forwards;
             will-change: transform;
         }
 
         .eliminated-banner.gif-mode { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 32px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 30px; 
             background-size: cover; background-position: center; background-color: transparent; 
             display: flex; align-items: center; justify-content: center; transform: translateX(-105%); 
             animation: slide-in-pause-out-gif var(--gif-duration) ease-in-out forwards;
@@ -283,26 +269,26 @@
         }
         
         .revived-banner { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 32px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 30px; 
             background-image: url('REVIVED.png'); 
             background-size: cover; 
             background-position: center;
             background-repeat: no-repeat; 
             color: #ffffff; 
-            display: flex; align-items: center; justify-content: center; font-size: 15px; transform: translateX(-105%); 
+            display: flex; align-items: center; justify-content: center; font-size: 14px; transform: translateX(-105%); 
             animation: slide-pause-out-banner 4s ease-in-out forwards;
             will-change: transform;
         }
         
-        /* 🟢 CSS Animation สำหรับ Bluezone (ใช้สีล้วน แยก Layer ไม่โปร่งใสตาม BG) */
+        /* 🟢 CSS Animation สำหรับ Bluezone */
         .team-row-inner::before { 
             content: ''; 
             position: absolute; 
             top: 0; 
             left: 0; 
             right: 0; 
-            height: 32px; 
-            background-color: rgba(4, 103, 173); /* สีฟ้าเข้มทึบ 100% */
+            height: 30px; 
+            background-color: rgba(4, 103, 173); 
             opacity: 0;
             transition: opacity 0.75s ease-in-out;
             z-index: 1; 
@@ -310,12 +296,10 @@
             will-change: opacity;
         }
 
-        /* เมื่อ JS เติม Class นี้ จะทำให้พื้นหลังกระพริบตามจังหวะ Global */
         .scoreboard-container.global-flash .team-row-inner.in-bluezone::before {
             opacity: 1;
         }
 
-        /* 🟢 แยกแอนิเมชันสำหรับผู้เล่นที่ล้ม (Knocked) - ปรับให้ช้าลงและสมูทขึ้นเป็นจังหวะหายใจ */
         @keyframes pulse-knocked {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; } 
@@ -342,7 +326,6 @@
     <div id="main-scoreboard" style="display: none;">
         <div class="scoreboard-container" id="main-container">
             <div class="row-grid header-row">
-                <!-- 🟢 ย้ายคอลัมน์ M ไปขวาสุดตรงนี้ -->
                 <div class="col-rank">#</div><div class="col-team">TEAM</div><div class="col-alive">ALIVE</div><div class="col-pts">PTS</div><div class="col-kills">KILLS</div><div class="col-match">M</div>
             </div>
             <div id="scoreboard"></div>
@@ -352,6 +335,9 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const tourneyId = urlParams.get('tourney');
+        
+        // 🟢 อ่านค่า Parameter ว่าต้องการโชว์ทุกทีมและปิดระบบออโต้สลับกลุ่มหรือไม่
+        const showAllTeams = urlParams.get('allteam') === 'true';
 
         let API_URL = "";
         const LOCAL_LOGO_PATH = "http://localhost/Keng/"; 
@@ -372,14 +358,11 @@
         let previousAliveCount = 0; 
         
         let teamBluechipCounts = {};
-        // 🟢 เก็บสถานะ ว่ามีคนกำลังรอฟื้นไหม (true/false) 
         let isWaitingForRevive = {}; 
         let matchEndTime = 0;
         
-        // 🟢 ตัวแปรสำหรับเช็คการสลับกลุ่มทีม
         let lastKnownTeams = [];
 
-        // โหลด State ของ Top4 จาก localStorage
         try {
             const savedTop4 = JSON.parse(localStorage.getItem(`pubg_finalTop4_${tourneyId || 'default'}`) || "[]");
             const savedOrder = JSON.parse(localStorage.getItem(`pubg_top4Order_${tourneyId || 'default'}`) || "[]");
@@ -390,7 +373,6 @@
             }
         } catch(e) {}
 
-        // 🟢 ระบบควบคุมแอนิเมชันกระพริบ (Global Sync) ใช้ควบคุมทั้ง Bluezone และ Knocked
         setInterval(() => {
             const container = document.getElementById('main-container');
             if(container) {
@@ -406,9 +388,9 @@
             const aliveTeamsCountCheck = data.data.teams.filter(t => t.elimination === false || (t.players && t.players.some(p => p.isAlive))).length;
             const currentTeamNamesList = data.data.teams.map(t => t.team_name);
             
-            // 🟢 ตรวจจับการเปลี่ยนกลุ่ม (ถ้าทีมเดิมหายไปเกินครึ่ง แปลว่าเริ่มห้องใหม่กลุ่มใหม่)
+            // 🟢 ตัดระบบเช็คกลุ่มอัตโนมัติออก ถ้าเปิด allteam=true
             let isGroupChanged = false;
-            if (!isFirstRender && lastKnownTeams.length > 0) {
+            if (!showAllTeams && !isFirstRender && lastKnownTeams.length > 0) {
                 const matchedCount = currentTeamNamesList.filter(name => lastKnownTeams.includes(name)).length;
                 if (matchedCount < 8) { 
                     isGroupChanged = true; 
@@ -416,14 +398,17 @@
             }
             lastKnownTeams = currentTeamNamesList;
 
-            // ตรวจจับการเริ่มแมตช์ใหม่หรือสลับกลุ่ม
             let isMatchReset = false;
-            if (isFirstRender || isGroupChanged || (previousAliveCount < 10 && aliveTeamsCountCheck >= 14)) {
-                isMatchReset = true;
+            if (showAllTeams) {
+                // ถ้า allteam=true จะล้างบอร์ดเฉพาะตอนรันครั้งแรก ไม่ล้างระหว่างเกม
+                if (isFirstRender) isMatchReset = true;
+            } else {
+                if (isFirstRender || isGroupChanged || (previousAliveCount < 10 && aliveTeamsCountCheck >= 14)) {
+                    isMatchReset = true;
+                }
             }
             previousAliveCount = aliveTeamsCountCheck;
 
-            // ล้างประวัติเกมส์เมื่อขึ้นแมตช์ใหม่
             if (isMatchReset) {
                 matchEndTime = 0;
                 top4EntryTime = 0;
@@ -440,20 +425,21 @@
                 localStorage.removeItem(`pubg_finalTop4_${tourneyId || 'default'}`);
                 localStorage.removeItem(`pubg_top4Order_${tourneyId || 'default'}`);
 
-                // 🟢 ล้างหน้าจอกระดานทิ้งทั้งหมด เพื่อวาดใหม่ไม่ให้ทีมเก่าค้าง
                 const sb = document.getElementById('scoreboard');
                 if (sb) sb.innerHTML = '';
             }
 
             const scoreboard = document.getElementById('scoreboard');
 
-            // 🟢 ดักเก็บตก: เตะกล่องทีมที่ไม่มีในรายชื่อแมตช์รอบนี้ออกจากจอทันที
-            const activeTeamIds = currentTeamNamesList.map(name => `team-${name}`);
-            scoreboard.querySelectorAll('.team-wrapper').forEach(row => {
-                if (!activeTeamIds.includes(row.id)) {
-                    row.remove();
-                }
-            });
+            // 🟢 จะไม่เตะกล่องทีมออกถ้าเปิด allteam=true
+            if (!showAllTeams) {
+                const activeTeamIds = currentTeamNamesList.map(name => `team-${name}`);
+                scoreboard.querySelectorAll('.team-wrapper').forEach(row => {
+                    if (!activeTeamIds.includes(row.id)) {
+                        row.remove();
+                    }
+                });
+            }
 
             const oldPositions = {};
             scoreboard.querySelectorAll('.team-wrapper').forEach(row => { oldPositions[row.id] = row.getBoundingClientRect().top; });
@@ -519,7 +505,6 @@
                 let teamIsAlive = false, teamInBlueZone = false, revivedPlayersQueue = [];
                 let dotsHtml = '', playerDetailsHtml = ''; 
 
-                // 🌟 1. ดักการ "กดใช้เครื่อง" 
                 let currentBluechipCount = team.useBluechipCount || team.revive_count || team.bluechip_revive || team.revives || 0;
                 
                 if (teamBluechipCounts[team.team_name] === undefined) {
@@ -591,7 +576,7 @@
                             const bannerHtml = document.createElement('div');
                             bannerHtml.className = 'revived-banner animate';
                             bannerHtml.style.backgroundImage = `url('REVIVED.png')`;
-                            bannerHtml.innerHTML = `<span style="font-size:15px; color:#ffffff; text-transform: none;">REVIVED: ${playerName}</span>`;
+                            bannerHtml.innerHTML = `<span style="font-size:14px; color:#ffffff; text-transform: none;">REVIVED: ${playerName}</span>`;
                             
                             innerRow.querySelector('.banner-layer').appendChild(bannerHtml);
                             setTimeout(() => { bannerHtml.remove(); }, 4050);
@@ -687,7 +672,6 @@
                 
                 if (!rowWrapper.querySelector('.row-grid')) {
                     const logoSrc = `${LOCAL_LOGO_PATH}${team.team_tag}.png`; 
-                    /* 🟢 ย้าย <div class="col-match"> มาต่อท้าย <div class="col-kills"> */
                     rowWrapper.innerHTML = `
                         <div class="row-grid">
                             <div class="col-rank">${team.total_pts_rank}</div>
@@ -787,8 +771,7 @@
                 document.body.style.transform = `translate(${x}px, ${y}px)`;
             }
 
-            // 🟢 เพิ่ม &all_team=true ลงใน API_URL เรียบร้อยแล้ว
-            API_URL = `https://domestic.atum.live/api/pubg/liveleaderboard?account_id=nattapon7799&series=${tourneyId}&tournament_id=${tourneyId}&mode=post&all_team=true`;
+            API_URL = `https://domestic.atum.live/api/pubg/liveleaderboard?account_id=nattapon7799&series=${tourneyId}&tournament_id=${tourneyId}&mode=post`;
             fetchRealTimeData();
             setInterval(fetchRealTimeData, 1000); 
         }
