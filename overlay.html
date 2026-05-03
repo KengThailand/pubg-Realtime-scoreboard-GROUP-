@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUBG Scoreboard - Advanced OBS Overlay (25px - Original Width)</title>
+    <title>PUBG Scoreboard - Advanced OBS Overlay</title>
     <style>
         :root {
             /* สีพื้นฐาน (รับค่าจาก URL ได้) */
@@ -35,7 +35,7 @@
         * {
             font-family: 'TransducerCondensed', sans-serif !important;
             letter-spacing: 0.5px;
-            font-weight: normal !important; 
+            font-weight: normal !important; /* บังคับให้เป็นตัวธรรมดา ไม่หนา */
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
             backface-visibility: hidden;
@@ -49,14 +49,11 @@
 
         body { margin: 0; padding: 20px; background-color: transparent; }
 
-        /* ความกว้างรวม 285px เหมือนต้นฉบับ */
-        .scoreboard-container { display: flex; flex-direction: column; width: 285px; position: relative; border-radius: 0px !important; overflow: visible !important; }
+        .scoreboard-container { display: flex; flex-direction: column; width: 260px; position: relative; border-radius: 0px !important; overflow: visible !important; }
         #scoreboard { display: flex; flex-direction: column; width: 100%; position: relative; overflow: visible !important; }
         
-        .header-row { height: 22px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
-        
-        /* 🟢 จัด Grid ใหม่: คืนค่าความกว้างคอลัมน์กลับเป็นค่าดั้งเดิมเป๊ะๆ */
-        .row-grid { display: grid; grid-template-columns: 24px minmax(0, 1fr) 42px 30px 38px 28px; align-items: center; box-sizing: border-box; padding: 0 4px; position: relative; z-index: 5; }
+        .header-row { height: 23px; position: relative; z-index: 20; background-color: var(--c-header-bg); color: var(--c-header-text); border-radius: 0px !important; }
+        .row-grid { display: grid; grid-template-columns: 24px minmax(0, 1fr) 42px 30px 38px; align-items: center; box-sizing: border-box; padding: 0 4px; position: relative; z-index: 5; }
         
         /* 60fps Optimization + Broadcast Easing */
         .team-wrapper { 
@@ -100,17 +97,30 @@
             will-change: background-color, opacity;
         }
 
-        /* ⭐ ปรับความสูงเป็น 25px */
-        .team-row-inner .row-grid { height: 25px; }
+        .team-row-inner .row-grid { height: 32px; }
         .team-row-inner.expanded .row-grid { border-bottom: 1px solid rgba(128, 128, 128, 0.3); margin-bottom: 5px; }
-        .team-row-inner.collapsed { max-height: 25px; padding-bottom: 0; overflow: hidden; }
+        .team-row-inner.collapsed { max-height: 32px; padding-bottom: 0; overflow: hidden; }
         .team-row-inner.expanded { max-height: 250px; padding-bottom: 8px; overflow: hidden; }
         
         .team-row-inner.first-place { border-bottom: 1px solid rgba(191,191,191,0.35); }
         .team-row-inner.normal-place { border-bottom: 1px solid rgba(191,191,191,0.35); }
         
-        .team-row-inner.eliminated-team .bg-layer { background-color: var(--c-team-bg-dead) !important; }
-        .team-row-inner.eliminated-team { color: var(--c-team-text-dead) !important; }
+        /* 🟢 เซ็ตพื้นหลังให้ดำโปร่งแสง ทะลุเห็นภาพในเกม */
+        .team-row-inner.eliminated-team .bg-layer { 
+            background-color: #000000 !important; 
+            opacity: 0.9 !important; 
+        }
+
+        /* 🟢 เซ็ตสีตัวหนังสือและตัวเลขของทีมที่ตายให้เป็นสีเทา */
+        .team-row-inner.eliminated-team { 
+            color: #7a7a7a !important; 
+        }
+
+        /* 🟢 ปรับโลโก้ให้ดูดสีออกเป็นขาวเทา และโปร่งแสง (ไม่ดำปื้น) */
+        .team-row-inner.eliminated-team .team-logo {
+            filter: grayscale(100%) brightness(0.9); 
+            opacity: 1; 
+        }
 
         @keyframes bluechip-glow { 
             0% { filter: brightness(1); } 
@@ -123,8 +133,8 @@
             right: -38px; 
             top: 0;
             width: 38px; 
-            height: 25px; 
-            background-color: rgba(0,0,0, 0.5); 
+            height: 32px; 
+            background-color: rgba(20,20,20, 0.9); 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -149,16 +159,42 @@
             padding: 3px;
             box-sizing: border-box;
         }
+        /* 🟢 เอฟเฟกต์เลื่อนตัวเลขคะแนนขึ้นเวลาอัปเดต (Slot Machine Effect) */
+        .score-anim-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .score-old-slide {
+            position: absolute;
+            animation: slideOutUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        .score-new-slide {
+            position: absolute;
+            animation: slideInUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes slideOutUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-120%); opacity: 0; }
+        }
+        @keyframes slideInUp {
+            0% { transform: translateY(120%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
 
-        .col-rank, .col-team, .col-match, .col-alive, .col-pts, .col-kills { display: flex; align-items: center; height: 100%; line-height: 1; }
+        .col-rank, .col-team, .col-alive, .col-pts, .col-kills { display: flex; align-items: center; height: 100%; line-height: 1; }
         
-        .col-rank { justify-content: center; font-size: 13px; }
+        .col-rank { justify-content: center; font-size: 18px; }
         
         .col-team { justify-content: flex-start; padding-left: 4px; }
-        .team-logo { width: 21px; height: 21px; margin-right: 6px; object-fit: contain; background-color: transparent; flex-shrink: 0; transform: translateZ(0); }
+        .team-logo { width: 28px; height: 28px; margin-right: 8px; object-fit: contain; background-color: transparent; flex-shrink: 0; transform: translateZ(0); transition: filter 0.3s, opacity 0.3s; }
         
+        /* 1. ตำแหน่งชื่อทีม (ตัวอักษร) */
         .team-name { 
-            font-size: 16px; 
+            font-size: 20px;
             font-weight: 100;
             white-space: nowrap; 
             overflow: hidden; 
@@ -170,47 +206,53 @@
             transform: translate(0px, 0px); 
         }
 
+        /* 2. ตำแหน่งขีด ALIVE */
         .col-alive { 
             justify-content: center; gap: 2px; 
             transform: translate(-4px, 0px); 
         }
 
+        /* 3. ตำแหน่งตัวเลขคะแนน PTS */
         .col-pts { 
-            justify-content: center; font-size: 14px; 
+            justify-content: center; font-size: 18px; 
             transform: translate(0px, 0px); 
         }
 
+        /* 4. ตำแหน่งตัวเลข KILLS */
         .col-kills { 
-            justify-content: center; font-size: 14px; 
+            justify-content: center; font-size: 18px; 
             transform: translate(0px, 0px); 
         }
 
-        .col-match { justify-content: center; font-size: 13px; transform: translate(0px, 0px); }
-
-        .header-row .col-rank, .header-row .col-team, .header-row .col-match, .header-row .col-alive, .header-row .col-pts, .header-row .col-kills { font-size: 11px; letter-spacing: 0px; }
-        .header-row .col-team { padding-left: 28px; } 
+        /* -------------------------------------------------------------------------
+           🎯 โซนปรับแต่งตำแหน่ง (X, Y) สำหรับแถบ Header ด้านบนสุด
+        -------------------------------------------------------------------------- */
+        .header-row .col-rank, .header-row .col-team, .header-row .col-alive, .header-row .col-pts, .header-row .col-kills { font-size: 15px; letter-spacing: 0px; font-weight: 100 }
+        .header-row .col-team { padding-left: 30px; } 
 
         .header-row .col-alive { transform: translate(-4px, 0px); }
         .header-row .col-pts { transform: translate(0px, 0px); }
         .header-row .col-kills { transform: translate(0px, 0px); }
-        .header-row .col-match { transform: translate(0px, 0px); }
+        /* ------------------------------------------------------------------------- */
 
-        .alive-bar { position: relative; width: 5px; height: 13px; border-radius: 1px; border: 1px solid #000000; box-sizing: border-box; background-color: #111111; overflow: hidden; transform: translateZ(0); }
+
+        .alive-bar { position: relative; width: 6px; height: 20px; border-radius: 1px; border: 1px solid #000000; box-sizing: border-box; background-color: #111111; overflow: hidden; transform: translateZ(0); }
         .hp-fill-small { 
             position: absolute; bottom: 0; left: 0; width: 100%; 
             height: 100%;
             transform-origin: bottom;
             transform: scaleY(1);
-            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s;
+            transition: transform 0.4s ease-out, background-color 0.4s;
             will-change: transform, background-color;
         }
 
-        .player-list { padding: 2px 8px 6px 34px; display: flex; flex-direction: column; gap: 4px; }
-        .player-item { display: grid; grid-template-columns: minmax(0, 1fr) 110px; align-items: center; gap: 10px; width: 100%; }
+        .player-list { padding: 2px 8px 6px 34px; display: flex; flex-direction: column; gap: 5px; }
+        .player-item { display: grid; grid-template-columns: minmax(0, 1fr) 130px; align-items: center; gap: 10px; width: 100%; }
         
         .player-name { 
-            font-size: 13px; 
-            white-space: nowrap; 
+            font-size: 16px; 
+            white-space: nowrap;
+            font-weight: 100;
             overflow: hidden; 
             text-overflow: ellipsis; 
             color: var(--c-team-text-alive); 
@@ -219,9 +261,9 @@
             display: block; 
             transform: translateY(1px); 
         }
-        .player-name.dead { color: var(--c-team-text-dead); opacity: 0.7; }
+        .player-name.dead { color: var(--c-team-text-dead); color: #7a7a7a; opacity: 1; }
         
-        .player-hp-bar { height: 8px; background-color: #444; border: 1px solid #000; position: relative; overflow: hidden; transform: translateZ(0); }
+        .player-hp-bar { height: 10px; background-color: #444; border: 1px solid #000; position: relative; overflow: hidden; transform: translateZ(0);transform: translateY(1px); }
         .player-hp-fill { 
             height: 100%; 
             width: 100%;
@@ -251,15 +293,15 @@
         }
         
         .eliminated-banner.default-mode { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 25px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 32px; 
             background-color: var(--c-elim-bg); color: var(--c-elim-text); 
-            display: flex; align-items: center; justify-content: center; font-size: 13px; transform: translateX(-105%); 
+            display: flex; align-items: center; justify-content: center; font-size: 16px; transform: translateX(-105%); 
             animation: slide-pause-out-banner var(--gif-duration) ease-in-out forwards;
             will-change: transform;
         }
 
         .eliminated-banner.gif-mode { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 25px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 32px; 
             background-size: cover; background-position: center; background-color: transparent; 
             display: flex; align-items: center; justify-content: center; transform: translateX(-105%); 
             animation: slide-in-pause-out-gif var(--gif-duration) ease-in-out forwards;
@@ -267,43 +309,47 @@
         }
         
         .revived-banner { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 25px; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 32px; 
             background-image: url('REVIVED.png'); 
             background-size: cover; 
             background-position: center;
             background-repeat: no-repeat; 
             color: #ffffff; 
-            display: flex; align-items: center; justify-content: center; font-size: 12px; transform: translateX(-105%); 
+            display: flex; align-items: center; justify-content: center; font-size: 18px; transform: translateX(-105%); 
             animation: slide-pause-out-banner 4s ease-in-out forwards;
             will-change: transform;
         }
         
+        /* 🟢 CSS Animation สำหรับ Bluezone (ใช้สีล้วน แยก Layer ไม่โปร่งใสตาม BG) */
         .team-row-inner::before { 
             content: ''; 
             position: absolute; 
             top: 0; 
             left: 0; 
             right: 0; 
-            height: 25px; 
-            background-color: rgba(4, 103, 173); 
+            height: 32px; 
+            background-color: rgba(45, 75, 140, 0.8); /* สีฟ้าเข้มทึบ 100% */
             opacity: 0;
-            transition: opacity 0.75s ease-in-out;
+            transition: opacity 1s ease-in-out;
             z-index: 1; 
             pointer-events: none; 
             will-change: opacity;
         }
 
+        /* เมื่อ JS เติม Class นี้ จะทำให้พื้นหลังกระพริบตามจังหวะ Global */
         .scoreboard-container.global-flash .team-row-inner.in-bluezone::before {
             opacity: 1;
         }
 
-        @keyframes pulse-knocked {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; } 
+        /* 🟢 แอนิเมชันสำหรับหลอดเลือดคนล้ม (แยกมารับคำสั่งจาก knocked-flash) */
+        .is-knocked {
+            transition: opacity 0.8s ease-in-out, filter 0.8s ease-in-out !important;
+            opacity: 1;
         }
-        .knocked-pulse {
-            animation: pulse-knocked 2.5s infinite ease-in-out; 
-            will-change: opacity;
+
+        .scoreboard-container.knocked-flash .is-knocked {
+            opacity: 0.1 !important; 
+            filter: brightness(1);
         }
         
         #error-msg { color: #f59600; font-size: 14px; background: #222; padding: 15px; border: 1px solid #f59600; display: none; }
@@ -323,7 +369,7 @@
     <div id="main-scoreboard" style="display: none;">
         <div class="scoreboard-container" id="main-container">
             <div class="row-grid header-row">
-                <div class="col-rank">#</div><div class="col-team">TEAM</div><div class="col-alive">ALIVE</div><div class="col-pts">PTS</div><div class="col-kills">KILLS</div><div class="col-match">M</div>
+                <div class="col-rank">#</div><div class="col-team">TEAM</div><div class="col-alive">ALIVE</div><div class="col-pts">PTS</div><div class="col-kills">KILLS</div>
             </div>
             <div id="scoreboard"></div>
         </div>
@@ -332,9 +378,6 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const tourneyId = urlParams.get('tourney');
-        
-        // 🟢 อ่านค่า Parameter ว่าต้องการโชว์ทุกทีมและปิดระบบออโต้สลับกลุ่มหรือไม่
-        const showAllTeams = urlParams.get('allteam') === 'true';
 
         let API_URL = "";
         const LOCAL_LOGO_PATH = "http://localhost/Keng/"; 
@@ -358,6 +401,23 @@
         let isWaitingForRevive = {}; 
         let matchEndTime = 0;
         
+        function animateValueChange(element, newValue) {
+            let currentVal = element.getAttribute('data-val');
+            if (currentVal !== null && currentVal != newValue) {
+                element.innerHTML = `<div class="score-anim-container"><div class="score-old-slide">${currentVal}</div><div class="score-new-slide">${newValue}</div></div>`;
+                element.setAttribute('data-val', newValue);
+                
+                setTimeout(() => {
+                    if (element.getAttribute('data-val') == newValue) {
+                        element.innerHTML = newValue;
+                    }
+                }, 500);
+            } else {
+                element.innerHTML = newValue;
+                element.setAttribute('data-val', newValue);
+            }
+        }
+
         let lastKnownTeams = [];
 
         try {
@@ -372,10 +432,13 @@
 
         setInterval(() => {
             const container = document.getElementById('main-container');
-            if(container) {
-                container.classList.toggle('global-flash');
-            }
-        }, 750); 
+            if(container) container.classList.toggle('global-flash');
+        }, 1000); 
+
+        setInterval(() => {
+            const container = document.getElementById('main-container');
+            if(container) container.classList.toggle('knocked-flash');
+        }, 1000); 
 
         function renderScoreboard(data) {
             if (!data || !data.data || !data.data.teams) return;
@@ -385,24 +448,16 @@
             const aliveTeamsCountCheck = data.data.teams.filter(t => t.elimination === false || (t.players && t.players.some(p => p.isAlive))).length;
             const currentTeamNamesList = data.data.teams.map(t => t.team_name);
             
-            // 🟢 ตัดระบบเช็คกลุ่มอัตโนมัติออก ถ้าเปิด allteam=true
             let isGroupChanged = false;
-            if (!showAllTeams && !isFirstRender && lastKnownTeams.length > 0) {
+            if (!isFirstRender && lastKnownTeams.length > 0) {
                 const matchedCount = currentTeamNamesList.filter(name => lastKnownTeams.includes(name)).length;
-                if (matchedCount < 8) { 
-                    isGroupChanged = true; 
-                }
+                if (matchedCount < 8) isGroupChanged = true; 
             }
             lastKnownTeams = currentTeamNamesList;
 
             let isMatchReset = false;
-            if (showAllTeams) {
-                // ถ้า allteam=true จะล้างบอร์ดเฉพาะตอนรันครั้งแรก ไม่ล้างระหว่างเกม
-                if (isFirstRender) isMatchReset = true;
-            } else {
-                if (isFirstRender || isGroupChanged || (previousAliveCount < 10 && aliveTeamsCountCheck >= 14)) {
-                    isMatchReset = true;
-                }
+            if (isFirstRender || isGroupChanged || (previousAliveCount < 10 && aliveTeamsCountCheck >= 14)) {
+                isMatchReset = true;
             }
             previousAliveCount = aliveTeamsCountCheck;
 
@@ -428,15 +483,10 @@
 
             const scoreboard = document.getElementById('scoreboard');
 
-            // 🟢 จะไม่เตะกล่องทีมออกถ้าเปิด allteam=true
-            if (!showAllTeams) {
-                const activeTeamIds = currentTeamNamesList.map(name => `team-${name}`);
-                scoreboard.querySelectorAll('.team-wrapper').forEach(row => {
-                    if (!activeTeamIds.includes(row.id)) {
-                        row.remove();
-                    }
-                });
-            }
+            const activeTeamIds = currentTeamNamesList.map(name => `team-${name}`);
+            scoreboard.querySelectorAll('.team-wrapper').forEach(row => {
+                if (!activeTeamIds.includes(row.id)) row.remove();
+            });
 
             const oldPositions = {};
             scoreboard.querySelectorAll('.team-wrapper').forEach(row => { oldPositions[row.id] = row.getBoundingClientRect().top; });
@@ -466,7 +516,6 @@
             }
 
             const isTop4Period = !isMatchEnded && !showFinalStandings && aliveTeamsCount <= 4 && (isMatchReset || (now - top4EntryTime >= elimDurationMs));
-
             const matchTop4Teams = data.data.teams.filter(t => t.match_live_rank <= 4).map(t => t.team_name);
 
             if (aliveTeamsCount <= 4 && !isMatchReset) {
@@ -501,6 +550,10 @@
 
                 let teamIsAlive = false, teamInBlueZone = false, revivedPlayersQueue = [];
                 let dotsHtml = '', playerDetailsHtml = ''; 
+                
+                // 🟢 แก้ Bug บอร์ดหายตอน TOP4: ดึงตัวแปรออกมาประกาศด้านนอก block ป้องกัน ReferenceError
+                let sortedForDots = [];
+                let sortedForTop4List = [];
 
                 let currentBluechipCount = team.useBluechipCount || team.revive_count || team.bluechip_revive || team.revives || 0;
                 
@@ -517,12 +570,13 @@
                 let prefixRegex = new RegExp('^' + safeTeamTag + '[_\\-\\s]?', 'i');
 
                 if (team.players) {
-                    let sortedForDots = [...team.players].sort((a, b) => {
+                    // 🟢 ตอนนี้ JavaScript จะจำค่า sortedForDots ได้แม้หลุดจาก block นี้ไปแล้ว
+                    sortedForDots = [...team.players].sort((a, b) => {
                         if (a.isAlive !== b.isAlive) return a.isAlive ? -1 : 1; 
                         return (b.health || 0) - (a.health || 0); 
                     });
 
-                    let sortedForTop4List = [...team.players].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+                    sortedForTop4List = [...team.players].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
                     sortedForDots.forEach(p => {
                         let isCurrentlyAlive = (p.isAlive === true || p.isAlive === 1 || p.isAlive === "true");
@@ -573,7 +627,7 @@
                             const bannerHtml = document.createElement('div');
                             bannerHtml.className = 'revived-banner animate';
                             bannerHtml.style.backgroundImage = `url('REVIVED.png')`;
-                            bannerHtml.innerHTML = `<span style="font-size:13px; color:#ffffff; text-transform: none;">REVIVED: ${playerName}</span>`;
+                            bannerHtml.innerHTML = `<span style="font-size:15px; font-weight: 100; color:#ffffff; text-transform: none;">REVIVED: ${playerName}</span>`;
                             
                             innerRow.querySelector('.banner-layer').appendChild(bannerHtml);
                             setTimeout(() => { bannerHtml.remove(); }, 4050);
@@ -674,19 +728,56 @@
                             <div class="col-rank">${team.total_pts_rank}</div>
                             <div class="col-team"><img class="team-logo" src="${logoSrc}" onerror="this.style.visibility='hidden'"><div class="team-name">${team.team_tag}</div></div>
                             <div class="col-alive">${dotsHtml}</div>
-                            <div class="col-pts">${team.total_pts_with_penalty}</div>
-                            <div class="col-kills">${team.match_kills}</div>
-                            <div class="col-match">${team.match_count || 0}</div>
+                            <div class="col-pts" data-val="${team.total_pts_with_penalty}">${team.total_pts_with_penalty}</div>
+                            <div class="col-kills" data-val="${team.match_kills}">${team.match_kills}</div>
                         </div>
                         <div class="player-list">${playerDetailsHtml}</div>
                     `;
                 } else {
                     rowWrapper.querySelector('.col-rank').innerText = team.total_pts_rank;
-                    rowWrapper.querySelector('.col-match').innerText = team.match_count || 0;
-                    rowWrapper.querySelector('.col-alive').innerHTML = dotsHtml;
-                    rowWrapper.querySelector('.col-pts').innerText = team.total_pts_with_penalty;
-                    rowWrapper.querySelector('.col-kills').innerText = team.match_kills;
-                    rowWrapper.querySelector('.player-list').innerHTML = playerDetailsHtml;
+                    
+                    const existingDots = rowWrapper.querySelectorAll('.alive-bar .hp-fill-small');
+                    if (existingDots.length === sortedForDots.length) {
+                        sortedForDots.forEach((p, i) => {
+                            let isCurrentlyAlive = (p.isAlive === true || p.isAlive === 1 || p.isAlive === "true");
+                            const hpPercent = isCurrentlyAlive ? (p.isGroggy ? 1 : (typeof p.health === 'number' ? p.health / 100 : 1)) : 0;
+                            const colorS = isCurrentlyAlive ? (p.isGroggy ? 'var(--c-tick-knocked)' : 'var(--c-tick-alive)') : 'transparent';
+                            
+                            existingDots[i].style.transform = `scaleY(${hpPercent})`;
+                            existingDots[i].style.backgroundColor = colorS;
+                            if (isCurrentlyAlive && p.isGroggy) existingDots[i].classList.add('is-knocked');
+                            else existingDots[i].classList.remove('is-knocked');
+                        });
+                    } else {
+                        rowWrapper.querySelector('.col-alive').innerHTML = dotsHtml;
+                    }
+                    
+                    animateValueChange(rowWrapper.querySelector('.col-pts'), team.total_pts_with_penalty);
+                    animateValueChange(rowWrapper.querySelector('.col-kills'), team.match_kills);
+                    
+                    const existingPlayers = rowWrapper.querySelectorAll('.player-item');
+                    if (existingPlayers.length === sortedForTop4List.length) {
+                        sortedForTop4List.forEach((p, i) => {
+                            let isCurrentlyAlive = (p.isAlive === true || p.isAlive === 1 || p.isAlive === "true");
+                            let rawName = p.name || '';
+                            let cleanName = rawName.replace(prefixRegex, '');
+                            
+                            const hpPercent = isCurrentlyAlive ? (p.isGroggy ? 1 : (typeof p.health === 'number' ? p.health / 100 : 1)) : 0;
+                            const colorL = isCurrentlyAlive ? (p.isGroggy ? 'var(--c-hp-knocked)' : 'var(--c-hp-alive)') : 'transparent';
+                            
+                            const nameDiv = existingPlayers[i].querySelector('.player-name');
+                            nameDiv.innerText = cleanName;
+                            if (isCurrentlyAlive) nameDiv.classList.remove('dead'); else nameDiv.classList.add('dead');
+                            
+                            const fillDiv = existingPlayers[i].querySelector('.player-hp-fill');
+                            fillDiv.style.transform = `scaleX(${hpPercent})`;
+                            fillDiv.style.backgroundColor = colorL;
+                            if (isCurrentlyAlive && p.isGroggy) fillDiv.classList.add('is-knocked');
+                            else fillDiv.classList.remove('is-knocked');
+                        });
+                    } else {
+                        rowWrapper.querySelector('.player-list').innerHTML = playerDetailsHtml;
+                    }
                 }
                 
             });
