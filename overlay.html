@@ -717,7 +717,7 @@
                 document.body.style.transform = `translate(${x}px, ${y}px)`;
             }
 
-            API_URL = `https://domestic.atum.live/api/pubg/liveleaderboard?account_id=nattapon7799&series=${tourneyId}&tournament_id=${tourneyId}&mode=post`;
+            API_URL = `https://domestic.atum.live/api/pubg/liveleaderboard?account_id=nattapon7799&series=${tourneyId}&tournament_id=${tourneyId}&mode=post&all_teams=true`;
             fetchRealTimeData();
             setInterval(fetchRealTimeData, 1000); 
         }
